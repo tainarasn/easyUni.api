@@ -1,0 +1,50 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  name          String
+  birth         String
+  image         String?
+  username      String   @unique
+  email         String   @unique
+  password      String
+
+  course        Course   @relation(fields: [courseId], references: [id])
+  courseId      Int
+}
+
+model Course {
+  id            Int       @id @default(autoincrement())
+  name          String
+  campus        String
+  totalPeriods  Float
+  matriz        Int
+  materias      Materia[]
+  users         User[]   
+}
+
+model Materia {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique
+  name        String
+  totalHours  Int
+  period      Int
+
+  course      Course?  @relation(fields: [courseId], references: [id])
+  courseId    Int?
+
+// Relação muitos-para-muitos consigo mesmo para pré-requisitos
+  prerequisites Materia[] @relation("Prerequisites")
+  requiredBy    Materia[] @relation("Prerequisites")
+}
+
