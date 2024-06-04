@@ -1,4 +1,6 @@
 import { Admin, Prisma, Student } from "@prisma/client"
+import { WithoutFunctions } from "./helpers"
+import { prisma } from "../prisma"
 
 export const user_include = Prisma.validator<Prisma.UserInclude>()({
     student: {
@@ -9,7 +11,15 @@ export const user_include = Prisma.validator<Prisma.UserInclude>()({
     },
     admin: { include: { user: true } },
 })
+
+//prisma table
 export type UserPrisma = Prisma.UserGetPayload<{ include: typeof user_include }>
+
+//front-end types
+export type UserForm = Omit<WithoutFunctions<User>, "id">
+
+//update user type
+export type PartialUser = Partial<User> & { id: number }
 
 export class User {
     id: number
@@ -21,8 +31,8 @@ export class User {
     student: Student | null
     admin: Admin | null
 
-    constructor(id: number, userPrisma?: UserPrisma) {
-        this.id = id
+    constructor(userPrisma?: UserPrisma) {
+        this.id = 0
         this.name = ""
         this.email = ""
         this.image = null
@@ -32,6 +42,23 @@ export class User {
         this.admin = null
 
         if (userPrisma) this.load(userPrisma)
+    }
+
+    static async new(data: UserForm) {
+        try {
+            const user = await prisma.user.create({
+                data: {
+                    ...data,
+                    student: data.student ? { create: { ...data.student } } : undefined,
+                    admin: data.admin ? { create: { ...data.admin } } : undefined,
+                },
+                include: user_include,
+            })
+
+            return user
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     load(data: UserPrisma) {

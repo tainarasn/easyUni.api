@@ -1,10 +1,19 @@
-// import express, { Express, Request, Response } from "express"
-// import { PartialUser, User, } from "../../class/User"
-// import { prisma } from "../../prisma"
-// import axios from "axios"
+import express, { Express, Request, Response } from "express"
+import { PartialUser, User, UserForm } from "../../class/User"
 
-// const router = express.Router()
+const router = express.Router()
 
+router.post("/new", async (request: Request, response: Response) => {
+    const data = request.body as UserForm
+
+    try {
+        console.log(data)
+        const user = new User()
+        response.json(user)
+    } catch (error) {
+        console.log(error)
+    }
+})
 // router.get("/", async (request: Request, response: Response) => {
 //     const id = request.query.id as number
 
