@@ -1,0 +1,16 @@
+model Activity{
+    id               Int       @id @default(autoincrement())
+    name             String
+    totalHours       String
+    linkCertificate  String?  
+
+    course           Course    @relation(fields: [courseId],references: [id])
+    courseId         Int      
+}
+
+model Course{
+    id            Int             @id
+    atividades       Activity[]
+}
+
+

@@ -1,0 +1,40 @@
+model Course {
+    id                      Int         @id @default(autoincrement())
+    name                    String
+    campus                  String?
+    totalPeriods            Float
+    totalHoursActivites     Int?
+    matriz                  Int?
+    materias                Materia[]
+    trilhas                 Trail[]
+    atividades              Activity[]    
+    students                Student[]   
+}   
+
+model Student{
+    id          Int         @id
+
+    course      Course      @relation(fields: [courseId], references: [id])
+    courseId    Int
+}   
+
+model Materia{
+    id          Int         @id
+
+    course      Course?     @relation(fields: [courseId], references: [id])
+    courseId    Int?
+} 
+
+model Activity{
+    id          Int         @id
+
+    course      Course?     @relation(fields: [courseId], references: [id])
+    courseId    Int?
+}   
+
+model Trail{
+    id          Int         @id
+
+    course      Course?     @relation(fields: [courseId], references: [id])
+    courseId    Int?
+}   

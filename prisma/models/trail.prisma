@@ -1,0 +1,23 @@
+model Trail{
+    id        Int       @id @default(autoincrement())
+    code      String
+    name      String?
+    materias  Materia[]  
+
+    course    Course    @relation(fields: [courseId],references: [id])
+    courseId  Int  
+   
+}
+
+
+model Course{
+    id            Int             @id
+    trilhas       Trail[]
+}
+
+model Materia{
+    id          Int         @id
+
+    trilha      Trail?     @relation(fields: [trilhaId], references: [id])
+    trilhaId    Int?
+} 

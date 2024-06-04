@@ -1,0 +1,36 @@
+model User {
+    id            Int             @id @default(autoincrement())
+    name          String
+    image         String?
+    username      String          @unique
+    email         String          @unique
+    password      String
+
+    student       Student?
+    admin         Admin?
+}
+
+model Student{
+    id            Int             @id @default(autoincrement())
+    period        Int
+
+    course        Course          @relation(fields: [courseId], references: [id])
+    courseId      Int
+
+
+    user          User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId        Int?            @unique
+}
+
+model Admin{
+    id            Int             @id @default(autoincrement())
+
+    user          User?           @relation(fields: [userId],references: [id], onDelete: Cascade)
+    userId        Int?            @unique
+}
+
+
+model Course{
+    id            Int             @id
+    students       Student[]
+}

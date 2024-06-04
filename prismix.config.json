@@ -1,0 +1,15 @@
+{
+    "mixers": [
+        {
+            "input": [
+                "prisma/base.prisma",
+                "prisma/models/user.prisma",
+                "prisma/models/course.prisma",
+                "prisma/models/materia.prisma",
+                "prisma/models/activity.prisma",
+                "prisma/models/trail.prisma"
+            ],
+            "output": "prisma/schema.prisma"
+        }
+    ]
+}
