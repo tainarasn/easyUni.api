@@ -26,10 +26,10 @@ export const handleSocket = (socket: Socket) => {
         console.log(`disconnected: ${socket.id}`)
     })
 
-    socket.on("user:signup", (data: User) => User.signup(data, socket))
-    socket.on("user:list", () => User.list(socket))
-    socket.on("user:login", (data: LoginForm) => User.login(data, socket))
-    socket.on("user:update", (data: PartialUser) => User.updateUser(data, socket))
+    // socket.on("user:signup", (data: User) => User.signup(data, socket))
+    // socket.on("user:list", () => User.list(socket))
+    // socket.on("user:login", (data: LoginForm) => User.login(data, socket))
+    // socket.on("user:update", (data: PartialUser) => User.updateUser(data, socket))
 }
 
 export default { initializeIoServer, getIoInstance, handleSocket }
