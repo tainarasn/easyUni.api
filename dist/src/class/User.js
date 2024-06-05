@@ -9,163 +9,58 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = exports.userIncludes = void 0;
+exports.User = exports.userInclusions = void 0;
 const client_1 = require("@prisma/client");
 const prisma_1 = require("../prisma");
-const Course_1 = require("./Course");
-exports.userIncludes = client_1.Prisma.validator()({
-    course: { include: Course_1.courseIncludes },
+exports.userInclusions = client_1.Prisma.validator()({
+    student: {
+        include: {
+            user: true,
+            atividades: true,
+            course: { include: { materias: true, atividades: true, students: true, trilhas: true } },
+        },
+    },
+    admin: { include: { user: true } },
 });
 class User {
-    constructor(id, user) {
+    constructor(userPrisma) {
         this.id = 0;
         this.name = "";
-        this.birth = "";
+        this.email = "";
         this.image = null;
         this.username = "";
-        this.email = "";
         this.password = "";
-        this.courseId = 0;
-        this.course = null;
-        user ? this.dataUser(user) : (this.id = id);
+        this.student = null;
+        this.admin = null;
+        if (userPrisma)
+            this.load(userPrisma);
     }
-    init() {
+    static signup(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield prisma_1.prisma.user.findUnique({ where: { id: this.id }, include: exports.userIncludes });
-            if (user) {
-                this.dataUser(user);
-            }
-            else {
-                throw "Usuário não encontrado";
-            }
-        });
-    }
-    static updateUser(data, socket) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const user = new User(data.id);
-            yield user.init();
-            yield user.updateUser(data, socket);
-        });
-    }
-    dataUser(data) {
-        this.id = data.id;
-        this.name = data.name;
-        this.birth = data.birth;
-        this.email = data.email;
-        this.username = data.username;
-        this.password = data.password;
-        this.image = data.image;
-        this.courseId = data.courseId;
-        this.course = data.course;
-    }
-    static login(data, socket) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const userLogin = yield prisma_1.prisma.user.findFirst({
-                where: { OR: [{ email: data.code }, { username: data.code }], password: data.password },
-                include: exports.userIncludes,
-            });
-            console.log(userLogin);
-            if (userLogin) {
-                const user = new User(userLogin.id, userLogin);
-                socket === null || socket === void 0 ? void 0 : socket.emit("user:login", user);
+            try {
+                const user_prisma = yield prisma_1.prisma.user.create({
+                    data: Object.assign(Object.assign({}, data), { student: data.student ? { create: Object.assign({}, data.student) } : undefined, admin: data.admin ? { create: Object.assign({}, data.admin) } : undefined }),
+                    include: exports.userInclusions,
+                });
+                const user = new User(user_prisma);
                 return user;
             }
-            else {
-                socket === null || socket === void 0 ? void 0 : socket.emit("user:login", null);
-            }
-            return null;
-        });
-    }
-    static signup(data, socket) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const user = yield prisma_1.prisma.user.findFirst({
-                    where: { OR: [{ id: data.id, email: data.email, username: data.username }] },
-                });
-                if (user) {
-                    console.log("Usuário já existe");
-                }
-                else {
-                    let courseInput;
-                    if (data.course) {
-                        courseInput = {
-                            connect: {
-                                id: data.course.id,
-                            },
-                        };
-                    }
-                    const userCreate = yield prisma_1.prisma.user.create({
-                        data: {
-                            name: data.name,
-                            birth: data.birth,
-                            username: data.username,
-                            email: data.email,
-                            password: data.password,
-                            image: "",
-                            // course: data.course ? { connect: { id: data.course.id } } : undefined,
-                            courseId: data.courseId,
-                        },
-                        include: exports.userIncludes,
-                    });
-                    const user = new User(userCreate.id);
-                    user.dataUser(userCreate);
-                    socket === null || socket === void 0 ? void 0 : socket.emit("user:signup", user);
-                    return user;
-                }
-            }
             catch (error) {
-                socket === null || socket === void 0 ? void 0 : socket.emit("user:signup:error", error);
                 console.log(error);
+                throw new Error("Erro ao criar usuário");
             }
         });
     }
-    updateUser(data, socket) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                // Crie um objeto para armazenar os dados de atualização
-                const dataToUpdate = {};
-                if (data.name !== undefined) {
-                    dataToUpdate.name = data.name;
-                }
-                if (data.birth !== undefined) {
-                    dataToUpdate.birth = data.birth;
-                }
-                if (data.email !== undefined) {
-                    dataToUpdate.email = data.email;
-                }
-                if (data.username !== undefined) {
-                    dataToUpdate.username = data.username;
-                }
-                if (data.password !== undefined) {
-                    dataToUpdate.password = data.password;
-                }
-                if (data.image !== null) {
-                    dataToUpdate.image = data.image;
-                }
-                // Realize a atualização no Prisma
-                const userUpdate = yield prisma_1.prisma.user.update({
-                    where: { id: this.id },
-                    data: dataToUpdate,
-                    include: exports.userIncludes,
-                });
-                if (socket) {
-                    socket.emit("user:update", userUpdate);
-                    socket.emit("user:update:success");
-                    console.log("user:update");
-                }
-                return userUpdate;
-            }
-            catch (error) {
-                console.error("Erro ao atualizar usuário:", error);
-                throw error;
-            }
-        });
-    }
-    static list(socket) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const users = yield prisma_1.prisma.user.findMany({ include: exports.userIncludes });
-            socket.emit("user:list", users);
-        });
+    load(data) {
+        this.id = data.id;
+        this.name = data.name;
+        this.email = data.email;
+        this.image = data.image;
+        this.username = data.username;
+        this.email = data.email;
+        this.password = data.password;
+        this.student = data.student;
+        this.admin = data.admin;
     }
 }
 exports.User = User;

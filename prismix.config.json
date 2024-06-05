@@ -7,7 +7,8 @@
                 "prisma/models/course.prisma",
                 "prisma/models/materia.prisma",
                 "prisma/models/activity.prisma",
-                "prisma/models/trail.prisma"
+                "prisma/models/trail.prisma",
+                "prisma/models/courseMateria.prisma"
             ],
             "output": "prisma/schema.prisma"
         }

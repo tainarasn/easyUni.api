@@ -1,0 +1,20 @@
+model CourseMateria {
+  courseId          Int
+  materiaId         Int
+  course            Course      @relation(fields: [courseId], references: [id])
+  materia           Materia     @relation(fields: [materiaId], references: [id])
+  @@id([courseId, materiaId])
+}
+
+model Course{
+  id        Int @id
+
+  materias CourseMateria[]
+}
+
+model Materia{
+    id        Int @id
+
+  courses CourseMateria[]
+
+}

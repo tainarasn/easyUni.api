@@ -8,27 +8,28 @@ model Materia {
     prerequisites   Materia[]   @relation("Prerequisites")
     requiredBy      Materia[]   @relation("Prerequisites")
 
-    course          Course?  @relation(fields: [courseId], references: [id])
-    courseId        Int?
+    courses         CourseMateria[]  
 
-  student      Student?     @relation(fields: [studentId], references: [id])
-    studentId    Int?
+    student         Student?     @relation(fields: [studentId], references: [id])
+    studentId       Int?
 
-    trilha          Trail     @relation(fields: [trilhaId],references: [id])
+    trilha          Trail        @relation(fields: [trilhaId],references: [id])
     trilhaId        Int
 }
 
-model Course{
-    id              Int             @id
-    materias        Materia[]
-}
+model CourseMateria{
+    id              Int          @id
+
+    materia         Materia?     @relation(fields: [materiaId], references: [id])
+    materiaId       Int?
+} 
 
 model Trail{
-    id              Int             @id
+    id              Int          @id
     materias        Materia[]
 }
 
 model Student{
-    id              Int             @id
+    id              Int          @id
     materiasCursadas    Materia[]
 }

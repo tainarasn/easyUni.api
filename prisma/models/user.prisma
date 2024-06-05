@@ -14,7 +14,8 @@ model Student{
     id            Int             @id @default(autoincrement())
     period        Int
 
-    materiasCursadas      Materia[]
+    materiasCursadas              Materia[]
+    atividades                    Activity[]    
 
     course        Course          @relation(fields: [courseId], references: [id])
     courseId      Int
@@ -42,3 +43,10 @@ model Materia{
     student      Student?         @relation(fields: [studentId], references: [id])
     studentId    Int?
 } 
+
+model Activity{
+    id          Int         @id
+
+    student      Student?     @relation(fields: [studentId], references: [id])
+    studentId    Int?
+}  

@@ -5,9 +5,9 @@ model Course {
     totalPeriods            Float
     totalHoursActivites     Int?
     matriz                  Int?
-    materias                Materia[]
+    materias                CourseMateria[]
     trilhas                 Trail[]
-    atividades              Activity[]    
+    
     students                Student[]   
 }   
 
@@ -18,19 +18,14 @@ model Student{
     courseId    Int
 }   
 
-model Materia{
+model CourseMateria{
     id          Int         @id
 
     course      Course?     @relation(fields: [courseId], references: [id])
     courseId    Int?
 } 
 
-model Activity{
-    id          Int         @id
-
-    course      Course?     @relation(fields: [courseId], references: [id])
-    courseId    Int?
-}   
+ 
 
 model Trail{
     id          Int         @id
