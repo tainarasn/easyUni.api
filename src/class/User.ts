@@ -1,19 +1,21 @@
 import { Admin, Prisma, Student } from "@prisma/client"
 import { WithoutFunctions } from "./helpers"
 import { prisma } from "../prisma"
+import { LoginForm } from "../types/shared/login"
 
-export const user_include = Prisma.validator<Prisma.UserInclude>()({
+export const userInclusions = Prisma.validator<Prisma.UserInclude>()({
     student: {
         include: {
             user: true,
-            course: { include: { materias: true, atividades: true, students: true, trilhas: true } },
+            atividades: true,
+            course: { include: { materias: true, students: true, trilhas: true } },
         },
     },
     admin: { include: { user: true } },
 })
 
 //prisma table
-export type UserPrisma = Prisma.UserGetPayload<{ include: typeof user_include }>
+export type UserPrisma = Prisma.UserGetPayload<{ include: typeof userInclusions }>
 
 //front-end types
 export type UserForm = Omit<WithoutFunctions<User>, "id">
@@ -44,21 +46,30 @@ export class User {
         if (userPrisma) this.load(userPrisma)
     }
 
-    static async new(data: UserForm) {
+    static async signup(data: UserForm) {
         try {
-            const user = await prisma.user.create({
+            const user_prisma = await prisma.user.create({
                 data: {
                     ...data,
                     student: data.student ? { create: { ...data.student } } : undefined,
                     admin: data.admin ? { create: { ...data.admin } } : undefined,
                 },
-                include: user_include,
+                include: userInclusions,
             })
 
+            const user = new User(user_prisma)
             return user
         } catch (error) {
             console.log(error)
+            throw new Error("Erro ao criar usuário")
         }
+    }
+
+    static async login(data: LoginForm) {
+        try {
+            const user = await prisma.user.findUnique({ where: { username: data.code, AND: { password: data.password } } })
+            return user
+        } catch (error) {}
     }
 
     load(data: UserPrisma) {

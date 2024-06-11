@@ -1,15 +1,15 @@
 model Activity{
-    id               Int       @id @default(autoincrement())
+    id               Int            @id @default(autoincrement())
     name             String
     totalHours       String
     linkCertificate  String?  
 
-    course           Course    @relation(fields: [courseId],references: [id])
-    courseId         Int      
+    student          Student        @relation(fields: [studentId],references: [id])
+    studentId        Int      
 }
 
-model Course{
-    id            Int             @id
+model Student{
+    id               Int            @id
     atividades       Activity[]
     
 }

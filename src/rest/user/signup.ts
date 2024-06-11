@@ -6,9 +6,16 @@ const router = express.Router()
 router.post("/", async (request: Request, response: Response) => {
     const data = request.body as User
     console.log(data)
-    const user = await User.signup(data)
-    console.log(user)
-    response.status(user instanceof User ? 200 : 400).json(user)
+
+    try {
+        const user = await User.signup(data)
+        console.log(user)
+        response.status(user instanceof User ? 200 : 400).json(user)
+
+        return response.json(user)
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 export default router

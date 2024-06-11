@@ -17,7 +17,7 @@ exports.userInclusions = client_1.Prisma.validator()({
         include: {
             user: true,
             atividades: true,
-            course: { include: { materias: true, atividades: true, students: true, trilhas: true } },
+            course: { include: { materias: true, students: true, trilhas: true } },
         },
     },
     admin: { include: { user: true } },
@@ -49,6 +49,15 @@ class User {
                 console.log(error);
                 throw new Error("Erro ao criar usuário");
             }
+        });
+    }
+    static login(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield prisma_1.prisma.user.findUnique({ where: { username: data.code, AND: { password: data.password } } });
+                return user;
+            }
+            catch (error) { }
         });
     }
     load(data) {

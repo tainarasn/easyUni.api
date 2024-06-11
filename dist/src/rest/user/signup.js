@@ -18,8 +18,14 @@ const router = express_1.default.Router();
 router.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const data = request.body;
     console.log(data);
-    const user = yield User_1.User.signup(data);
-    console.log(user);
-    response.status(user instanceof User_1.User ? 200 : 400).json(user);
+    try {
+        const user = yield User_1.User.signup(data);
+        console.log(user);
+        response.status(user instanceof User_1.User ? 200 : 400).json(user);
+        return response.json(user);
+    }
+    catch (error) {
+        console.log(error);
+    }
 }));
 exports.default = router;

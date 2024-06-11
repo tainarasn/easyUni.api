@@ -3,17 +3,20 @@ import { PartialUser, User, UserForm } from "../../class/User"
 
 const router = express.Router()
 
-router.post("/new", async (request: Request, response: Response) => {
-    const data = request.body as UserForm
+// router.post("/new", async (request: Request, response: Response) => {
+//     const data = request.body as UserForm
 
-    try {
-        console.log(data)
-        const user = new User()
-        response.json(user)
-    } catch (error) {
-        console.log(error)
-    }
-})
+//     try {
+//         console.log(data)
+//         const user = await User.signup(data)
+
+//         user.i
+
+//         response.json(user)
+//     } catch (error) {
+//         console.log(error)
+//     }
+// })
 // router.get("/", async (request: Request, response: Response) => {
 //     const id = request.query.id as number
 

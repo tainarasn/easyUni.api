@@ -16,29 +16,4 @@ router.post("/", async (request: Request, response: Response) => {
     }
 })
 
-router.post("/keep_session", async (request: Request, response: Response) => {
-    const data = request.body as User
-    console.log(data)
-
-    try {
-        const user = new User(data.id)
-        await user.init()
-        response.json(user)
-    } catch (error) {
-        console.log(error)
-        response.json(null)
-    }
-})
-
-router.post("/admin", async (request: Request, response: Response) => {
-    const data = request.body as LoginForm
-    try {
-        const admin = await User.login({ ...data,  })
-        response.json(admin)
-    } catch (error) {
-        console.log(error)
-        response.status(500).send(error)
-    }
-})
-
 export default router

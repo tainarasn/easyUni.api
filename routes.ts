@@ -11,4 +11,6 @@ router.get("/", (req: Request, response: Response) => {
 
 router.use("/login", login)
 router.use("/signup", signup)
-// router.use("/user", user)
+// router.use("/user")
+
+export default router

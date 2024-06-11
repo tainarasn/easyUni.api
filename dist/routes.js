@@ -14,4 +14,5 @@ exports.router.get("/", (req, response) => {
 });
 exports.router.use("/login", login_1.default);
 exports.router.use("/signup", signup_1.default);
-// router.use("/user", user)
+// router.use("/user")
+exports.default = exports.router;

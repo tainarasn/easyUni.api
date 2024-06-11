@@ -18,6 +18,7 @@ exports.course_inclusions = client_1.Prisma.validator()({
     trilhas: { include: { materias: true } },
 });
 class Course {
+    //init class
     constructor(coursePrisma) {
         this.id = 0;
         this.name = "";
