@@ -56,16 +56,38 @@ class Course {
             }
         });
     }
+    static updateCourse(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const course_prisma = yield prisma_1.prisma.course.update({
+                    where: { id: data.id },
+                    data: {
+                        name: data.name,
+                        campus: data.campus,
+                        matriz: data.matriz,
+                        totalPeriods: data.totalPeriods,
+                        totalHoursActivites: data.totalHoursActivites,
+                    },
+                    include: exports.course_inclusions,
+                });
+                return new Course(course_prisma);
+            }
+            catch (error) {
+                console.log(error);
+                throw new Error("Erro ao atualizar Curso");
+            }
+        });
+    }
     load(data) {
         this.id = data.id;
-        this.name = data.name;
+        this.name = data.name || "";
         this.campus = data.campus || "";
-        this.totalPeriods = data.totalPeriods;
+        this.totalPeriods = data.totalPeriods || 0;
         this.totalHoursActivites = data.totalHoursActivites || 0.0;
         this.matriz = data.matriz || 0;
-        this.materias = data.materias;
-        this.trilhas = data.trilhas;
-        this.students = data.students;
+        this.materias = data.materias || [];
+        this.trilhas = data.trilhas || [];
+        this.students = data.students || [];
     }
 }
 exports.Course = Course;

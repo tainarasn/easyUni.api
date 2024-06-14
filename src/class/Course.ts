@@ -24,7 +24,7 @@ export class Course {
     students: Student[]
 
     //init class
-    constructor(coursePrisma?: CoursePrisma) {
+    constructor(coursePrisma?: CoursePrisma | PartialCourse) {
         this.id = 0
         this.name = ""
         this.campus = ""
@@ -62,15 +62,36 @@ export class Course {
         }
     }
 
-    load(data: CoursePrisma) {
+    static async updateCourse(data: PartialCourse) {
+        try {
+            const course_prisma = await prisma.course.update({
+                where: { id: data.id },
+                data: {
+                    name: data.name,
+                    campus: data.campus,
+                    matriz: data.matriz,
+                    totalPeriods: data.totalPeriods,
+                    totalHoursActivites: data.totalHoursActivites,
+                },
+                include: course_inclusions,
+            })
+
+            return new Course(course_prisma)
+        } catch (error) {
+            console.log(error)
+            throw new Error("Erro ao atualizar Curso")
+        }
+    }
+
+    load(data: CoursePrisma | PartialCourse) {
         this.id = data.id
-        this.name = data.name
+        this.name = data.name || ""
         this.campus = data.campus || ""
-        this.totalPeriods = data.totalPeriods
+        this.totalPeriods = data.totalPeriods || 0
         this.totalHoursActivites = data.totalHoursActivites || 0.0
         this.matriz = data.matriz || 0
-        this.materias = data.materias
-        this.trilhas = data.trilhas
-        this.students = data.students
+        this.materias = (data as CoursePrisma).materias || []
+        this.trilhas = (data as CoursePrisma).trilhas || []
+        this.students = (data as CoursePrisma).students || []
     }
 }
