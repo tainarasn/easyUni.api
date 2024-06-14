@@ -54,10 +54,22 @@ class User {
     static login(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield prisma_1.prisma.user.findUnique({ where: { username: data.code, AND: { password: data.password } } });
+                const user = yield prisma_1.prisma.user.findFirst({
+                    where: {
+                        AND: [{ username: data.code }, { password: data.password }],
+                    },
+                    include: exports.userInclusions,
+                });
+                if (!user) {
+                    throw new Error("Invalid username or password");
+                }
+                console.log(user);
                 return user;
             }
-            catch (error) { }
+            catch (error) {
+                console.error(error);
+                throw new Error("Erro ao realizar login");
+            }
         });
     }
     load(data) {
