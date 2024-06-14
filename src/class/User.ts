@@ -67,23 +67,9 @@ export class User {
 
     static async login(data: LoginForm) {
         try {
-            const user = await prisma.user.findFirst({
-                where: {
-                    AND: [{ username: data.code }, { password: data.password }],
-                },
-                include: userInclusions,
-            })
-
-            if (!user) {
-                throw new Error("Invalid username or password")
-            }
-
-            console.log(user)
+            const user = await prisma.user.findUnique({ where: { username: data.code, AND: { password: data.password } } })
             return user
-        } catch (error) {
-            console.error(error)
-            throw new Error("Erro ao realizar login")
-        }
+        } catch (error) {}
     }
 
     load(data: UserPrisma) {
