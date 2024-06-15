@@ -32,6 +32,7 @@ class User {
         this.password = "";
         this.student = null;
         this.admin = null;
+        this.isAdmin = false;
         if (userPrisma)
             this.load(userPrisma);
     }
@@ -72,6 +73,36 @@ class User {
             }
         });
     }
+    static update(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user_update = yield prisma_1.prisma.user.update({
+                    where: { id: data.id },
+                    data: {
+                        name: data.name,
+                        email: data.email,
+                        password: data.password,
+                        image: data.image,
+                        username: data.username,
+                        isAdmin: data.isAdmin,
+                        admin: data.admin ? { update: Object.assign({}, data.admin) } : undefined,
+                        student: data.student
+                            ? {
+                                update: Object.assign({}, data.student),
+                            }
+                            : undefined,
+                    },
+                    include: exports.userInclusions,
+                });
+                const user = new User(user_update);
+                return user;
+            }
+            catch (error) {
+                console.error(error);
+                throw new Error("Erro ao atualizar usuário");
+            }
+        });
+    }
     load(data) {
         this.id = data.id;
         this.name = data.name;
@@ -82,6 +113,7 @@ class User {
         this.password = data.password;
         this.student = data.student;
         this.admin = data.admin;
+        this.isAdmin = data.isAdmin;
     }
 }
 exports.User = User;

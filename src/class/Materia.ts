@@ -60,7 +60,7 @@ export class Materia {
                         ? { connect: data.requiredBy.map((required) => ({ id: required.id })) }
                         : undefined,
                     course: data.course ? { connect: { id: data.course.id } } : undefined,
-                    trilha: { connect: { id: data.trilha.id } },
+                    trilha: data.trilha ? { connect: { id: data.trilha.id } } : undefined,
                     student: data.student ? { connect: { id: data.student.id } } : undefined,
                 },
                 include: materia_inclusions,

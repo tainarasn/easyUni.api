@@ -41,6 +41,8 @@ class Course {
                         name: data.name,
                         campus: data.campus,
                         totalPeriods: data.totalPeriods,
+                        matriz: data.matriz,
+                        totalHoursActivites: data.totalHoursActivites,
                         materias: data.materias ? { create: data.materias.map((materia) => (Object.assign({}, materia))) } : undefined,
                         trilhas: data.trilhas ? { create: data.trilhas.map((trilha) => (Object.assign({}, trilha))) } : undefined,
                         students: data.students ? { create: data.students.map((student) => (Object.assign({}, student))) } : undefined,

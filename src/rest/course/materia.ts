@@ -3,7 +3,7 @@ import { Materia, MateriaForm, PartialMateria } from "../../class/Materia"
 
 const router = express.Router()
 
-router.post("/create", async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
     const data = req.body as MateriaForm
 
     try {

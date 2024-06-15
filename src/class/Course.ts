@@ -47,6 +47,8 @@ export class Course {
                     name: data.name,
                     campus: data.campus,
                     totalPeriods: data.totalPeriods,
+                    matriz: data.matriz,
+                    totalHoursActivites: data.totalHoursActivites,
                     materias: data.materias ? { create: data.materias.map((materia) => ({ ...materia })) } : undefined,
                     trilhas: data.trilhas ? { create: data.trilhas.map((trilha) => ({ ...trilha })) } : undefined,
                     students: data.students ? { create: data.students.map((student) => ({ ...student })) } : undefined,

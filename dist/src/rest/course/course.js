@@ -15,6 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const Course_1 = require("../../class/Course");
 const router = express_1.default.Router();
+router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = req.body;
+    try {
+        const course = yield Course_1.Course.create(data);
+        res.json(course);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Erro ao atualizar Curso");
+    }
+}));
 router.patch("/update", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     try {

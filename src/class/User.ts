@@ -32,6 +32,7 @@ export class User {
     password: string
     student: Student | null
     admin: Admin | null
+    isAdmin: boolean
 
     constructor(userPrisma?: UserPrisma) {
         this.id = 0
@@ -42,6 +43,7 @@ export class User {
         this.password = ""
         this.student = null
         this.admin = null
+        this.isAdmin = false
 
         if (userPrisma) this.load(userPrisma)
     }
@@ -86,6 +88,37 @@ export class User {
         }
     }
 
+    static async update(data: PartialUser) {
+        try {
+            const user_update = await prisma.user.update({
+                where: { id: data.id },
+                data: {
+                    name: data.name,
+                    email: data.email,
+                    password: data.password,
+                    image: data.image,
+                    username: data.username,
+                    isAdmin: data.isAdmin,
+                    admin: data.admin ? { update: { ...data.admin } } : undefined,
+                    student: data.student
+                        ? {
+                              update: {
+                                  ...data.student,
+                              },
+                          }
+                        : undefined,
+                },
+                include: userInclusions,
+            })
+
+            const user = new User(user_update)
+            return user
+        } catch (error) {
+            console.error(error)
+            throw new Error("Erro ao atualizar usuário")
+        }
+    }
+
     load(data: UserPrisma) {
         this.id = data.id
         this.name = data.name
@@ -96,5 +129,6 @@ export class User {
         this.password = data.password
         this.student = data.student
         this.admin = data.admin
+        this.isAdmin = data.isAdmin
     }
 }
