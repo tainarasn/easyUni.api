@@ -88,6 +88,7 @@ class Materia {
                     },
                     include: exports.materia_inclusions,
                 });
+                console.log(materia_prisma);
                 return new Materia(materia_prisma);
             }
             catch (error) {
@@ -105,6 +106,18 @@ class Materia {
             catch (error) {
                 console.log(error);
                 throw new Error("Error ao buscar todas as matérias");
+            }
+        });
+    }
+    static delete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const materia = yield prisma_1.prisma.materia.delete({ where: { id: id } });
+                return materia;
+            }
+            catch (error) {
+                console.log(error);
+                throw new Error("Erro ao atualizar matéria");
             }
         });
     }

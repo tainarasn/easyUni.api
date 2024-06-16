@@ -95,6 +95,7 @@ export class Materia {
                 include: materia_inclusions,
             })
 
+            console.log(materia_prisma)
             return new Materia(materia_prisma)
         } catch (error) {
             console.log(error)
@@ -110,6 +111,16 @@ export class Materia {
         } catch (error) {
             console.log(error)
             throw new Error("Error ao buscar todas as matérias")
+        }
+    }
+
+    static async delete(id: number) {
+        try {
+            const materia = await prisma.materia.delete({ where: { id: id } })
+            return materia
+        } catch (error) {
+            console.log(error)
+            throw new Error("Erro ao atualizar matéria")
         }
     }
 
