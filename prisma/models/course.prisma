@@ -4,6 +4,7 @@ model Course {
     campus                  String?
     totalPeriods            Float
     totalHoursActivites     Int?
+    totalHours              Int         @default(0)
     matriz                  Int?
     materias                Materia[]
     // materias                CourseMateria[]

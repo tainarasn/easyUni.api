@@ -26,6 +26,17 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).send("Erro ao atualizar Curso");
     }
 }));
+router.get("/all", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const materias = yield Course_1.Course.list();
+        res.json(materias);
+        console.log(materias[11]);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Erro ao listar materias");
+    }
+}));
 router.patch("/update", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     try {
@@ -35,6 +46,19 @@ router.patch("/update", (req, res) => __awaiter(void 0, void 0, void 0, function
     catch (error) {
         console.error(error);
         res.status(500).send("Erro ao atualizar Curso");
+    }
+}));
+router.get("/delete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = req.query.id;
+    try {
+        if (data) {
+            const course = yield Course_1.Course.delete(Number(data));
+            res.json(course);
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Erro ao atualizar matéria");
     }
 }));
 exports.default = router;

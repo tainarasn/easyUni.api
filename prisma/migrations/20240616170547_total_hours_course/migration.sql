@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Course` ADD COLUMN `totalHours` INTEGER NOT NULL DEFAULT 0;

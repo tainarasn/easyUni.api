@@ -25,6 +25,7 @@ class Course {
         this.campus = "";
         this.totalPeriods = 0.0;
         this.totalHoursActivites = 0.0;
+        this.totalHours = 0;
         this.matriz = 0;
         this.materias = [];
         this.trilhas = [];
@@ -43,6 +44,7 @@ class Course {
                         totalPeriods: data.totalPeriods,
                         matriz: data.matriz,
                         totalHoursActivites: data.totalHoursActivites,
+                        totalHours: data.totalHours,
                         materias: data.materias ? { create: data.materias.map((materia) => (Object.assign({}, materia))) } : undefined,
                         trilhas: data.trilhas ? { create: data.trilhas.map((trilha) => (Object.assign({}, trilha))) } : undefined,
                         students: data.students ? { create: data.students.map((student) => (Object.assign({}, student))) } : undefined,
@@ -77,6 +79,30 @@ class Course {
             catch (error) {
                 console.log(error);
                 throw new Error("Erro ao atualizar Curso");
+            }
+        });
+    }
+    static list() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const course = yield prisma_1.prisma.course.findMany({ include: exports.course_inclusions });
+                return course;
+            }
+            catch (error) {
+                console.log(error);
+                throw new Error("Error ao buscar todas as cursos");
+            }
+        });
+    }
+    static delete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const course = yield prisma_1.prisma.course.delete({ where: { id: id } });
+                return course;
+            }
+            catch (error) {
+                console.log(error);
+                throw new Error("Erro ao atualizar matéria");
             }
         });
     }

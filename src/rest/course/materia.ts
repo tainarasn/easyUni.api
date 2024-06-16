@@ -37,6 +37,7 @@ router.patch("/update", async (req: Request, res: Response) => {
         res.status(500).send("Erro ao atualizar matéria")
     }
 })
+
 router.get("/delete", async (req: Request, res: Response) => {
     const data = req.query.id as number | undefined
 

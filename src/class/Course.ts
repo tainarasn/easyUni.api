@@ -18,6 +18,7 @@ export class Course {
     campus: string | ""
     totalPeriods: number
     totalHoursActivites: number
+    totalHours: number
     matriz: number
     materias: Materia[]
     trilhas: Trail[]
@@ -30,6 +31,7 @@ export class Course {
         this.campus = ""
         this.totalPeriods = 0.0
         this.totalHoursActivites = 0.0
+        this.totalHours = 0
         this.matriz = 0
         this.materias = []
         this.trilhas = []
@@ -49,6 +51,7 @@ export class Course {
                     totalPeriods: data.totalPeriods,
                     matriz: data.matriz,
                     totalHoursActivites: data.totalHoursActivites,
+                    totalHours: data.totalHours,
                     materias: data.materias ? { create: data.materias.map((materia) => ({ ...materia })) } : undefined,
                     trilhas: data.trilhas ? { create: data.trilhas.map((trilha) => ({ ...trilha })) } : undefined,
                     students: data.students ? { create: data.students.map((student) => ({ ...student })) } : undefined,
@@ -82,6 +85,27 @@ export class Course {
         } catch (error) {
             console.log(error)
             throw new Error("Erro ao atualizar Curso")
+        }
+    }
+
+    static async list() {
+        try {
+            const course = await prisma.course.findMany({ include: course_inclusions })
+
+            return course
+        } catch (error) {
+            console.log(error)
+            throw new Error("Error ao buscar todas as cursos")
+        }
+    }
+
+    static async delete(id: number) {
+        try {
+            const course = await prisma.course.delete({ where: { id: id } })
+            return course
+        } catch (error) {
+            console.log(error)
+            throw new Error("Erro ao atualizar matéria")
         }
     }
 
