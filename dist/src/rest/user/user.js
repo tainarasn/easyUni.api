@@ -27,4 +27,27 @@ router.patch("/update", (request, response) => __awaiter(void 0, void 0, void 0,
         response.status(500).json(error);
     }
 }));
+router.get("/all", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const course = yield User_1.User.list();
+        res.json(course);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Erro ao listar materias");
+    }
+}));
+router.get("/delete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = req.query.id;
+    try {
+        if (data) {
+            const course = yield User_1.User.delete(Number(data));
+            res.json(course);
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Erro ao atualizar matéria");
+    }
+}));
 exports.default = router;

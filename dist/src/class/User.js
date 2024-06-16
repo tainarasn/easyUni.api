@@ -17,7 +17,7 @@ exports.userInclusions = client_1.Prisma.validator()({
         include: {
             user: true,
             atividades: true,
-            course: { include: { materias: true, students: true, trilhas: true } },
+            course: { include: { materias: true, trilhas: true } },
         },
     },
     admin: { include: { user: true } },
@@ -33,6 +33,7 @@ class User {
         this.student = null;
         this.admin = null;
         this.isAdmin = false;
+        this.student = null;
         if (userPrisma)
             this.load(userPrisma);
     }
@@ -40,7 +41,14 @@ class User {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const user_prisma = yield prisma_1.prisma.user.create({
-                    data: Object.assign(Object.assign({}, data), { student: data.student ? { create: Object.assign({}, data.student) } : undefined, admin: data.admin ? { create: Object.assign({}, data.admin) } : undefined }),
+                    data: Object.assign(Object.assign({}, data), { student: data.student
+                            ? {
+                                create: {
+                                    period: data.student.period,
+                                    courseId: data.student.courseId,
+                                },
+                            }
+                            : undefined, admin: data.admin ? { create: Object.assign({}, data.admin) } : undefined }),
                     include: exports.userInclusions,
                 });
                 const user = new User(user_prisma);
@@ -88,7 +96,10 @@ class User {
                         admin: data.admin ? { update: Object.assign({}, data.admin) } : undefined,
                         student: data.student
                             ? {
-                                update: Object.assign({}, data.student),
+                                update: {
+                                    period: data.student.period,
+                                    //   courseId: data.student.courseId,
+                                },
                             }
                             : undefined,
                     },
@@ -100,6 +111,30 @@ class User {
             catch (error) {
                 console.error(error);
                 throw new Error("Erro ao atualizar usuário");
+            }
+        });
+    }
+    static list() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield prisma_1.prisma.user.findMany({ include: exports.userInclusions });
+                return user;
+            }
+            catch (error) {
+                console.log(error);
+                throw new Error("Error ao buscar todas as cursos");
+            }
+        });
+    }
+    static delete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield prisma_1.prisma.user.delete({ where: { id: id } });
+                return user;
+            }
+            catch (error) {
+                console.log(error);
+                throw new Error("Erro ao atualizar matéria");
             }
         });
     }

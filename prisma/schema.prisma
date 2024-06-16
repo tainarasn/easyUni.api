@@ -23,8 +23,8 @@ model Student {
 	period Int 
 	materiasCursadas Materia[] @relation(name: "MateriaToStudent")
 	atividades Activity[] @relation(name: "ActivityToStudent")
-	course Course @relation(name: "CourseToStudent", fields: [courseId], references: [id])
-	courseId Int 
+	course Course? @relation(name: "CourseToStudent", fields: [courseId], references: [id])
+	courseId Int? 
 	user User? @relation(name: "StudentToUser", fields: [userId], references: [id], onDelete: Cascade)
 	userId Int? @unique
 }

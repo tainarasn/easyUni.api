@@ -14,7 +14,6 @@ const client_1 = require("@prisma/client");
 const prisma_1 = require("../prisma");
 exports.course_inclusions = client_1.Prisma.validator()({
     materias: { include: { prerequisites: true, requiredBy: true } },
-    students: { include: { user: true } },
     trilhas: { include: { materias: true } },
 });
 class Course {
@@ -47,7 +46,6 @@ class Course {
                         totalHours: data.totalHours,
                         materias: data.materias ? { create: data.materias.map((materia) => (Object.assign({}, materia))) } : undefined,
                         trilhas: data.trilhas ? { create: data.trilhas.map((trilha) => (Object.assign({}, trilha))) } : undefined,
-                        students: data.students ? { create: data.students.map((student) => (Object.assign({}, student))) } : undefined,
                     },
                     include: exports.course_inclusions,
                 });
@@ -115,7 +113,6 @@ class Course {
         this.matriz = data.matriz || 0;
         this.materias = data.materias || [];
         this.trilhas = data.trilhas || [];
-        this.students = data.students || [];
     }
 }
 exports.Course = Course;

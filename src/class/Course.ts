@@ -4,7 +4,6 @@ import { prisma } from "../prisma"
 
 export const course_inclusions = Prisma.validator<Prisma.CourseInclude>()({
     materias: { include: { prerequisites: true, requiredBy: true } },
-    students: { include: { user: true } },
     trilhas: { include: { materias: true } },
 })
 
@@ -54,7 +53,6 @@ export class Course {
                     totalHours: data.totalHours,
                     materias: data.materias ? { create: data.materias.map((materia) => ({ ...materia })) } : undefined,
                     trilhas: data.trilhas ? { create: data.trilhas.map((trilha) => ({ ...trilha })) } : undefined,
-                    students: data.students ? { create: data.students.map((student) => ({ ...student })) } : undefined,
                 },
                 include: course_inclusions,
             })
@@ -118,6 +116,5 @@ export class Course {
         this.matriz = data.matriz || 0
         this.materias = (data as CoursePrisma).materias || []
         this.trilhas = (data as CoursePrisma).trilhas || []
-        this.students = (data as CoursePrisma).students || []
     }
 }

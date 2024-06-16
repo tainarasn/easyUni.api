@@ -8,7 +8,7 @@ export const userInclusions = Prisma.validator<Prisma.UserInclude>()({
         include: {
             user: true,
             atividades: true,
-            course: { include: { materias: true, students: true, trilhas: true } },
+            course: { include: { materias: true, trilhas: true } },
         },
     },
     admin: { include: { user: true } },
@@ -44,6 +44,7 @@ export class User {
         this.student = null
         this.admin = null
         this.isAdmin = false
+        this.student = null
 
         if (userPrisma) this.load(userPrisma)
     }
@@ -53,7 +54,14 @@ export class User {
             const user_prisma = await prisma.user.create({
                 data: {
                     ...data,
-                    student: data.student ? { create: { ...data.student } } : undefined,
+                    student: data.student
+                        ? {
+                              create: {
+                                  period: data.student.period,
+                                  courseId: data.student.courseId,
+                              },
+                          }
+                        : undefined,
                     admin: data.admin ? { create: { ...data.admin } } : undefined,
                 },
                 include: userInclusions,
@@ -103,7 +111,8 @@ export class User {
                     student: data.student
                         ? {
                               update: {
-                                  ...data.student,
+                                  period: data.student.period,
+                                  //   courseId: data.student.courseId,
                               },
                           }
                         : undefined,
@@ -116,6 +125,27 @@ export class User {
         } catch (error) {
             console.error(error)
             throw new Error("Erro ao atualizar usuário")
+        }
+    }
+
+    static async list() {
+        try {
+            const user = await prisma.user.findMany({ include: userInclusions })
+
+            return user
+        } catch (error) {
+            console.log(error)
+            throw new Error("Error ao buscar todas as cursos")
+        }
+    }
+
+    static async delete(id: number) {
+        try {
+            const user = await prisma.user.delete({ where: { id: id } })
+            return user
+        } catch (error) {
+            console.log(error)
+            throw new Error("Erro ao atualizar matéria")
         }
     }
 

@@ -10,15 +10,8 @@ model Course {
     // materias                CourseMateria[]
     trilhas                 Trail[]
     
-    students                Student[]   
 }   
-
-model Student{
-    id          Int         @id
-
-    course      Course      @relation(fields: [courseId], references: [id])
-    courseId    Int
-}   
+ 
 model Materia{
     id          Int         @id
 
