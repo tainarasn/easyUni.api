@@ -26,6 +26,16 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).send("Erro ao cadastrar matéria");
     }
 }));
+router.get("/all", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const materias = yield Materia_1.Materia.list();
+        res.json(materias);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Erro ao listar materias");
+    }
+}));
 router.patch("/update", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     try {

@@ -15,6 +15,16 @@ router.post("/", async (req: Request, res: Response) => {
     }
 })
 
+router.get("/all", async (req: Request, res: Response) => {
+    try {
+        const materias = await Materia.list()
+        res.json(materias)
+    } catch (error) {
+        console.error(error)
+        res.status(500).send("Erro ao listar materias")
+    }
+})
+
 router.patch("/update", async (req: Request, res: Response) => {
     const data = req.body as PartialMateria
 

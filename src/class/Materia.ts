@@ -102,6 +102,17 @@ export class Materia {
         }
     }
 
+    static async list() {
+        try {
+            const materias = await prisma.materia.findMany({ include: materia_inclusions })
+
+            return materias
+        } catch (error) {
+            console.log(error)
+            throw new Error("Error ao buscar todas as matérias")
+        }
+    }
+
     load(data: MateriaPrisma) {
         this.id = data.id
         this.code = data.code

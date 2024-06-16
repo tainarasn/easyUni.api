@@ -96,6 +96,18 @@ class Materia {
             }
         });
     }
+    static list() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const materias = yield prisma_1.prisma.materia.findMany({ include: exports.materia_inclusions });
+                return materias;
+            }
+            catch (error) {
+                console.log(error);
+                throw new Error("Error ao buscar todas as matérias");
+            }
+        });
+    }
     load(data) {
         this.id = data.id;
         this.code = data.code;
