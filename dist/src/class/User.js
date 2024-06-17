@@ -99,6 +99,11 @@ class User {
                                 update: {
                                     period: data.student.period,
                                     //   courseId: data.student.courseId,
+                                    //   materiasCursadas: {
+                                    //       connect: data.student.materiasCursadas?.map((materiaId) => ({
+                                    //           id: materiaId,
+                                    //       })),
+                                    //   },
                                 },
                             }
                             : undefined,
