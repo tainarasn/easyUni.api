@@ -3,6 +3,7 @@ import login from "./src/rest/user/login"
 import signup from "./src/rest/user/signup"
 import course from "./src/rest/course/course"
 import materia from "./src/rest/course/materia"
+import trail from "./src/rest/course/trail"
 import user from "./src/rest/user/user"
 
 export const router = express.Router()
@@ -16,5 +17,6 @@ router.use("/signup", signup)
 router.use("/user", user)
 router.use("/course", course)
 router.use("/materia", materia)
+router.use("/trail", trail)
 
 export default router

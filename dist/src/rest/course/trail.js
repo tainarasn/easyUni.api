@@ -13,13 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const Course_1 = require("../../class/Course");
+const Trail_1 = require("../../class/Trail");
 const router = express_1.default.Router();
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     try {
-        const course = yield Course_1.Course.create(data);
-        res.json(course);
+        const trail = yield Trail_1.Trail.create(data);
+        res.json(trail);
     }
     catch (error) {
         console.error(error);
@@ -28,8 +28,8 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 router.get("/all", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const courses = yield Course_1.Course.list();
-        res.json(courses);
+        const trails = yield Trail_1.Trail.list();
+        res.json(trails);
     }
     catch (error) {
         console.error(error);
@@ -39,20 +39,20 @@ router.get("/all", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 router.patch("/update", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     try {
-        const course = yield Course_1.Course.updateCourse(data);
-        res.json(course);
+        const trail = yield Trail_1.Trail.update(data);
+        res.json(trail);
     }
     catch (error) {
         console.error(error);
-        res.status(500).send("Erro ao atualizar Curso");
+        res.status(500).send("Erro ao atualizar Trilha");
     }
 }));
 router.get("/delete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.query.id;
     try {
         if (data) {
-            const course = yield Course_1.Course.delete(Number(data));
-            res.json(course);
+            const trail = yield Trail_1.Trail.delete(Number(data));
+            res.json(trail);
         }
     }
     catch (error) {

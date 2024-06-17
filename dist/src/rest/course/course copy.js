@@ -28,8 +28,9 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 router.get("/all", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const courses = yield Course_1.Course.list();
-        res.json(courses);
+        const materias = yield Course_1.Course.list();
+        res.json(materias);
+        console.log(materias[11]);
     }
     catch (error) {
         console.error(error);

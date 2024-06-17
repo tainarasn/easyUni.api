@@ -1,14 +1,15 @@
 import express, { Express, Request, Response } from "express"
 import { Course, CourseForm, CoursePrisma, PartialCourse } from "../../class/Course"
+import { PartialTrail, Trail, TrailForm } from "../../class/Trail"
 
 const router = express.Router()
 
 router.post("/", async (req: Request, res: Response) => {
-    const data = req.body as CourseForm
+    const data = req.body as TrailForm
 
     try {
-        const course = await Course.create(data)
-        res.json(course)
+        const trail = await Trail.create(data)
+        res.json(trail)
     } catch (error) {
         console.error(error)
         res.status(500).send("Erro ao atualizar Curso")
@@ -17,22 +18,22 @@ router.post("/", async (req: Request, res: Response) => {
 
 router.get("/all", async (req: Request, res: Response) => {
     try {
-        const courses = await Course.list()
-        res.json(courses)
+        const trails = await Trail.list()
+        res.json(trails)
     } catch (error) {
         console.error(error)
         res.status(500).send("Erro ao listar materias")
     }
 })
 router.patch("/update", async (req: Request, res: Response) => {
-    const data = req.body as PartialCourse
+    const data = req.body as PartialTrail
 
     try {
-        const course = await Course.updateCourse(data)
-        res.json(course)
+        const trail = await Trail.update(data)
+        res.json(trail)
     } catch (error) {
         console.error(error)
-        res.status(500).send("Erro ao atualizar Curso")
+        res.status(500).send("Erro ao atualizar Trilha")
     }
 })
 
@@ -41,8 +42,8 @@ router.get("/delete", async (req: Request, res: Response) => {
 
     try {
         if (data) {
-            const course = await Course.delete(Number(data))
-            res.json(course)
+            const trail = await Trail.delete(Number(data))
+            res.json(trail)
         }
     } catch (error) {
         console.error(error)

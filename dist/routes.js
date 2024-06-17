@@ -9,6 +9,7 @@ const login_1 = __importDefault(require("./src/rest/user/login"));
 const signup_1 = __importDefault(require("./src/rest/user/signup"));
 const course_1 = __importDefault(require("./src/rest/course/course"));
 const materia_1 = __importDefault(require("./src/rest/course/materia"));
+const trail_1 = __importDefault(require("./src/rest/course/trail"));
 const user_1 = __importDefault(require("./src/rest/user/user"));
 exports.router = express_1.default.Router();
 exports.router.get("/", (req, response) => {
@@ -19,4 +20,5 @@ exports.router.use("/signup", signup_1.default);
 exports.router.use("/user", user_1.default);
 exports.router.use("/course", course_1.default);
 exports.router.use("/materia", materia_1.default);
+exports.router.use("/trail", trail_1.default);
 exports.default = exports.router;
