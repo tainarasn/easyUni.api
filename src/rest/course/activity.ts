@@ -1,14 +1,14 @@
 import express, { Request, Response } from "express"
-import { Materia, MateriaForm, PartialMateria } from "../../class/Materia"
+import { Activity, ActivityForm, PartialActivity } from "../../class/Activity"
 
 const router = express.Router()
 
 router.post("/", async (req: Request, res: Response) => {
-    const data = req.body as MateriaForm
+    const data = req.body as ActivityForm
 
     try {
-        const materia = await Materia.create(data)
-        res.json(materia)
+        const activity = await Activity.create(data)
+        res.json(activity)
     } catch (error) {
         console.error(error)
         res.status(500).send("Erro ao cadastrar matéria")
@@ -17,20 +17,20 @@ router.post("/", async (req: Request, res: Response) => {
 
 router.get("/all", async (req: Request, res: Response) => {
     try {
-        const materias = await Materia.list()
-        res.json(materias)
+        const activities = await Activity.list()
+        res.json(activities)
     } catch (error) {
         console.error(error)
-        res.status(500).send("Erro ao listar materias")
+        res.status(500).send("Erro ao listar activitys")
     }
 })
 
 router.patch("/update", async (req: Request, res: Response) => {
-    const data = req.body as PartialMateria
+    const data = req.body as PartialActivity
 
     try {
-        const materia = await Materia.updateMateria(data)
-        res.json(materia)
+        const activity = await Activity.update(data)
+        res.json(activity)
     } catch (error) {
         console.error(error)
         res.status(500).send("Erro ao atualizar matéria")
@@ -42,8 +42,8 @@ router.get("/delete", async (req: Request, res: Response) => {
 
     try {
         if (data) {
-            const materia = await Materia.delete(Number(data))
-            res.json(materia)
+            const activity = await Activity.delete(Number(data))
+            res.json(activity)
         }
     } catch (error) {
         console.error(error)

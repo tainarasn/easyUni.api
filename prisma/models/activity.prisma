@@ -4,8 +4,8 @@ model Activity{
     totalHours       String
     linkCertificate  String?  
 
-    student          Student        @relation(fields: [studentId],references: [id])
-    studentId        Int      
+    student          Student?        @relation(fields: [studentId],references: [id])
+    studentId        Int?      
 }
 
 model Student{

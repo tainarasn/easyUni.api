@@ -13,13 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const Materia_1 = require("../../class/Materia");
+const Activity_1 = require("../../class/Activity");
 const router = express_1.default.Router();
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     try {
-        const materia = yield Materia_1.Materia.create(data);
-        res.json(materia);
+        const activity = yield Activity_1.Activity.create(data);
+        res.json(activity);
     }
     catch (error) {
         console.error(error);
@@ -28,19 +28,19 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
 router.get("/all", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const materias = yield Materia_1.Materia.list();
-        res.json(materias);
+        const activities = yield Activity_1.Activity.list();
+        res.json(activities);
     }
     catch (error) {
         console.error(error);
-        res.status(500).send("Erro ao listar materias");
+        res.status(500).send("Erro ao listar activitys");
     }
 }));
 router.patch("/update", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     try {
-        const materia = yield Materia_1.Materia.updateMateria(data);
-        res.json(materia);
+        const activity = yield Activity_1.Activity.update(data);
+        res.json(activity);
     }
     catch (error) {
         console.error(error);
@@ -51,8 +51,8 @@ router.get("/delete", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const data = req.query.id;
     try {
         if (data) {
-            const materia = yield Materia_1.Materia.delete(Number(data));
-            res.json(materia);
+            const activity = yield Activity_1.Activity.delete(Number(data));
+            res.json(activity);
         }
     }
     catch (error) {
