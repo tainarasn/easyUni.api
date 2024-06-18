@@ -50,4 +50,17 @@ router.get("/delete", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(500).send("Erro ao atualizar matéria");
     }
 }));
+router.post("/addMateria", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = req.body;
+    try {
+        if (data) {
+            const course = yield User_1.User.addMateria(data);
+            res.json(course);
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Erro ao associar matéria a estudante");
+    }
+}));
 exports.default = router;

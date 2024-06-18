@@ -17,6 +17,7 @@ exports.userInclusions = client_1.Prisma.validator()({
         include: {
             user: true,
             atividades: true,
+            materiasCursadas: true,
             course: { include: { materias: true, trilhas: true } },
         },
     },
@@ -116,6 +117,32 @@ class User {
             catch (error) {
                 console.error(error);
                 throw new Error("Erro ao atualizar usuário");
+            }
+        });
+    }
+    static addMateria(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Encontra a matéria pelo ID
+                const findMateria = yield prisma_1.prisma.materia.findFirst({ where: { id: data.materiaId } });
+                // Verifica se a matéria foi encontrada
+                if (!findMateria) {
+                    throw new Error(`Materia com id ${data.materiaId} não encontrado`);
+                }
+                // Atualiza o estudante conectando a matéria encontrada
+                const studentUpdate = yield prisma_1.prisma.student.update({
+                    where: { id: data.studentId },
+                    data: {
+                        materiasCursadas: {
+                            connect: { id: findMateria.id },
+                        },
+                    },
+                });
+                return studentUpdate;
+            }
+            catch (error) {
+                console.error("Error adding materia to student:", error);
+                throw error;
             }
         });
     }

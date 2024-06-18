@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express"
 import { PartialUser, User, UserForm } from "../../class/User"
+import { AddMateria } from "../../types/shared/addMateria"
 
 const router = express.Router()
 
@@ -36,6 +37,19 @@ router.get("/delete", async (req: Request, res: Response) => {
     } catch (error) {
         console.error(error)
         res.status(500).send("Erro ao atualizar matéria")
+    }
+})
+router.post("/addMateria", async (req: Request, res: Response) => {
+    const data = req.body as AddMateria
+
+    try {
+        if (data) {
+            const course = await User.addMateria(data)
+            res.json(course)
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).send("Erro ao associar matéria a estudante")
     }
 })
 
